@@ -16,7 +16,7 @@ contract Contract is Ownable, ERC721, IERC2981 {
     // Public address of the royalty reciever:
     address royaltyReciever;
     // Royalty Amount:
-    uint256 royaltyAmount;
+    uint256 royaltyPercentage;
 
     using Counters for Counters.Counter;
 
@@ -100,8 +100,8 @@ contract Contract is Ownable, ERC721, IERC2981 {
       royaltyReciever = _address;
     }
     
-    function setRoyaltyTouint256(uint _royaltyAmount) public onlyOwner {
-      royaltyAmount = _royaltyAmount;
+    function setRoyaltyTouint256(uint _royaltyPercentage) public onlyOwner {
+      royaltyPercentage = _royaltyPercentage;
     }
     
 
