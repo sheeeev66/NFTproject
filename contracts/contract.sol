@@ -8,19 +8,18 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 /**
  * @author Roi Di Segni (aka Sheeeev66)
- * @dev 
  */
 
 contract Contract is Ownable, ERC721, IERC2981 {
 
     // Public address of the royalty reciever:
-    address royaltyReciever;
-    // Royalty Amount:
-    uint256 royaltyPercentage;
+    address private royaltyReciever;
+    // Royalty percentage:
+    uint256 private royaltyPercentage;
 
     using Counters for Counters.Counter;
 
-    event NewTokenMinted(uint tgaId, uint dna);
+    event NewTokenMinted(uint id, uint dna);
     event Withdrawn(address _address, uint amount);
     
     // track token ID
@@ -38,7 +37,7 @@ contract Contract is Ownable, ERC721, IERC2981 {
 
     /**
      * @dev withdraw contract balance to a wallet
-     * @dev won't execute if it isn't the owner who is executing the command
+     * @notice won't execute if it isn't the owner who is executing the command
      * @param _address the address to withdraw to
      */
     function withdraw(address payable _address) public onlyOwner {
@@ -89,19 +88,32 @@ contract Contract is Ownable, ERC721, IERC2981 {
      * @dev Royalty info for the exchange to read (using EIP-2981 royalty standard)
      * @param tokenId the token Id 
      * @param salePrice the price the NFT was sold for
-     * @dev return: send 5% royalty to the "royaltyReciever"
+     * @dev returns: send a percent of the sale price to the royalty recievers address
+     * @notice this function is to be called by exchanges to get the royalty information
      */
     function royaltyInfo(uint256 tokenId, uint256 salePrice) external view override returns (address receiver, uint256 royaltyAmount) {
         require(_exists(tokenId), "ERC2981RoyaltyStandard: Royalty info for nonexistent token");
-        return (royaltyReciever, salePrice * 500 /*percentage in basis points (5%)*/ / 10000);
+        return (royaltyReciever, (salePrice * royaltyPercentage) / 10000);
     }
     
+    /**
+     * @dev Sets the royalty recieving address to:
+     * @param _address the address the royalties are sent to
+     * @notice Setting the recieving address to the zero address will result in an error
+     */
     function setRoyaltyRecieverTo(address _address) public onlyOwner {
-      royaltyReciever = _address;
+        require(_address != address(0), "Cannot send royalties to the zero address");
+        royaltyReciever = _address;
     }
     
-    function setRoyaltyTouint256(uint _royaltyPercentage) public onlyOwner {
-      royaltyPercentage = _royaltyPercentage;
+    /**
+     * @dev Sets the royalty percentage to:
+     * @param _royaltyPercentage the percentage of the sale in basis points (0.01% = 1 | 100% = 10000)
+     * @dev example: If I want to set 5% so "_royaltyPercentage" will be 500
+     */
+    function setRoyaltyPercentageTo(uint _royaltyPercentage) public onlyOwner {
+        require(_royaltyPercentage <= 2000, "Royalty cannot be more than 20 percent");
+        royaltyPercentage = _royaltyPercentage;
     }
     
 
