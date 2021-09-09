@@ -100,7 +100,7 @@ contract Contract is Ownable, ERC721, IERC2981 {
       royaltyReciever = _address;
     }
     
-    function setRoyaltyTouint256 _royaltyAmount) public onlyOwner {
+    function setRoyaltyTouint256(uint _royaltyAmount) public onlyOwner {
       royaltyAmount = _royaltyAmount;
     }
     
