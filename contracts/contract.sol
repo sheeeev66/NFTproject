@@ -66,11 +66,10 @@ contract Contract is Ownable, ERC721, IERC2981 {
 
         for (uint i=0; i < _tokenCount; i++) {
             require(_tokenId.current() <= 9999, "No more tokens avalible");
-            uint32 id = uint32(_tokenId.current());
 
-            _safeMint(msg.sender, id);
+            _safeMint(msg.sender, _tokenId.current());
 
-            emit NewTokenMinted(id, _generateRandomDna());
+            emit NewTokenMinted(_tokenId.current(), _generateRandomDna());
             _tokenId.increment();
         }
     }
