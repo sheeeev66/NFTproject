@@ -10,7 +10,7 @@ import "./ERC721.sol";
  * @author Roi Di Segni (aka @sheeeev66)
  */
 
-contract ContractName is Ownable, ERC721, IERC2981 {
+contract Contract is Ownable, ERC721, IERC2981 {
 
     // Public address of the royalty receiver:
     address private royaltyReceiver;
@@ -38,7 +38,7 @@ contract ContractName is Ownable, ERC721, IERC2981 {
     mapping(address => bool) preMintParticipant;
 
 
-    constructor() ERC721("Name", "AAA") { }
+    constructor(string memory name_, string memory symbol_) ERC721(name_, symbol_) { }
 
 
     function supportsInterface(bytes4 interfaceId) public view override(ERC721, IERC165) returns (bool) {
@@ -114,11 +114,11 @@ contract ContractName is Ownable, ERC721, IERC2981 {
      * @notice only eligable people can pre minutes
      * @notice pre minting can only 
      */
-    function preMintName() public payable {
-        require(teamMintAvalible == false, "Pre minting isn't yet avalible");
-        require(launched == false, "Pre mint phase is over. Please use safeMintTga(tokenCount))");
-        require(preMintParticipant[msg.sender], "Address not eligable for a pre mint");
-        require(msg.value >= 10000000000000000, "Ether value sent is not correct"); // price for 1: 0.01 eth
+    function preMintName() public /* payable */ { 
+        // require(teamMintAvalible == false, "Pre minting isn't yet avalible");
+        // require(launched == false, "Pre mint phase is over. Please use safeMintTga(tokenCount))");
+        // require(preMintParticipant[msg.sender], "Address not eligable for a pre mint");
+        // require(msg.value >= 10000000000000000, "Ether value sent is not correct"); // price for 1: 0.01 eth
 
         _safeMint(msg.sender, _tokenId.current());
 

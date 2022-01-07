@@ -50,7 +50,7 @@ module.exports = {
       // Special function to setup the provider
       provider: function () {
         // Setting the provider with the Infura Rinkeby address and Token
-        return new HDWalletProvider(process.env.TEST_MNEMONIC, "https://rinkeby.infura.io/v3/"+process.env.INFURA_KEY, 0)
+        return new HDWalletProvider(process.env.PRIVKEY, "https://rinkeby.infura.io/v3/"+process.env.INFURA_KEY, 0)
       },
       // Network id is 4 for Rinkeby
       network_id: 4
